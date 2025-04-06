@@ -10,7 +10,7 @@ import {
   Home as HomeIcon, Heart, Dumbbell, ShowerHead, Microwave, WashingMachine,
   ClockIcon, BanIcon, PawPrintIcon, CalendarX2Icon, InfoIcon, FileTextIcon,
   BedDouble, BedSingle, LayoutGrid, Square, DoorOpen,
-  Star, MapPin, Users, Wifi, Car, Coffee, Tv, Snowflake, Check,
+  Star, MapPin, Users, Wifi, Car, Coffee, Tv, Snowflake,
   WavesLadderIcon
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -25,11 +25,11 @@ export default function Home() {
   const [showAllReviewsModal, setShowAllReviewsModal] = useState(false);
   const [showCancellationPolicyModal, setShowCancellationPolicyModal] = useState(false);
   const [activeTab, setActiveTab] = useState("reviews");
-  const [isMobile, setIsMobile] = useState(false);
+  //const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      //setIsMobile(window.innerWidth < 768);
     };
 
     handleResize();
