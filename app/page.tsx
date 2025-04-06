@@ -25,7 +25,53 @@ export default function Home() {
   const [showAllReviewsModal, setShowAllReviewsModal] = useState(false);
   const [showCancellationPolicyModal, setShowCancellationPolicyModal] = useState(false);
   const [activeTab, setActiveTab] = useState("reviews");
+  // Agrega al inicio del componente, con los demás estados
+  const [showRoomModal, setShowRoomModal] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<{
+    title: string;
+    description: string;
+    features: string[];
+    image: string;
+  } | null>(null);
   //const [isMobile, setIsMobile] = useState(false);
+
+  // Define la información de los dormitorios basada en el documento
+const roomDetails = {
+  bedroom1: {
+    title: "Dormitorio 1",
+    description: "Amplia habitación con vista al mar en el penthouse Luna Maya, Tierra 6.",
+    features: [
+      "Cama king-size de alta calidad",
+      "Armario de pared a pared con amplio espacio de almacenamiento",
+      "Baño completo en suite con secador de cabello y artículos de baño incluidos",
+      "Ventanas con cortinas eléctricas anticiclónicas",
+      "Aire acondicionado individual",
+      "TV pantalla plana",
+      "Vistas panorámicas al mar Caribe"
+    ],
+    image: "/images/bedroom1-2.jpg"
+  },
+  bedroom2: {
+    title: "Dormitorio 2",
+    description: "Habitación espaciosa con acabados de lujo en el penthouse Luna Maya.",
+    features: [
+      "Cama king-size premium",
+      "Armario de pared a pared con sistema de organización",
+      "Baño completo en suite con amenities de cortesía",
+      "Pisos de mármol y acabados de alta gama",
+      "Aire acondicionado individual con control remoto",
+      "Balcón privado con vistas a la piscina y áreas comunes",
+      "Iluminación ambiental regulable"
+    ],
+    image: "/images/bedroom2-1.jpg"
+  }
+};
+
+// Función para abrir el modal con la habitación seleccionada
+const openRoomModal = (room: 'bedroom1' | 'bedroom2') => {
+  setSelectedRoom(roomDetails[room]);
+  setShowRoomModal(true);
+};
 
   useEffect(() => {
     const handleResize = () => {
@@ -159,7 +205,7 @@ export default function Home() {
               </div>
               <div className="flex items-center">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
-                <span className="ml-1 text-gray-600">2 huéspedes</span>
+                <span className="ml-1 text-gray-600">4 huéspedes</span>
               </div>
               <div className="flex items-center">
                 <span className="text-gray-600">2 habitaciones</span>
@@ -226,14 +272,14 @@ export default function Home() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white p-3 rounded shadow-sm">
-                    <div className="relative w-full h-48 mb-2 overflow-hidden rounded-md">
-                      <Image
-                        src="/images/bedroom1-2.jpg"
-                        alt="Dormitorio 1"
-                        fill
-                        className="object-cover transition-opacity duration-300 hover:opacity-90"
-                      />
-                    </div>
+                  <div className="relative w-full h-48 mb-2 overflow-hidden rounded-md cursor-pointer" onClick={() => openRoomModal('bedroom1')}>
+  <Image
+    src="/images/bedroom1-2.jpg"
+    alt="Dormitorio 1"
+    fill
+    className="object-cover transition-opacity duration-300 hover:opacity-90"
+  />
+</div>
                     <div className="flex items-center mb-1">
                       <BedSingle className="w-4 h-4 mr-2 text-gray-600" />
                       <span className="font-medium">Dormitorio 1</span>
@@ -242,14 +288,14 @@ export default function Home() {
                   </div>
                   
                   <div className="bg-white p-3 rounded shadow-sm">
-                    <div className="relative w-full h-48 mb-2 overflow-hidden rounded-md">
-                      <Image
-                        src="/images/bedroom2-1.jpg"
-                        alt="Dormitorio 2"
-                        fill
-                        className="object-cover transition-opacity duration-300 hover:opacity-90"
-                      />
-                    </div>
+                  <div className="relative w-full h-48 mb-2 overflow-hidden rounded-md cursor-pointer" onClick={() => openRoomModal('bedroom2')}>
+  <Image
+    src="/images/bedroom2-1.jpg"
+    alt="Dormitorio 2"
+    fill
+    className="object-cover transition-opacity duration-300 hover:opacity-90"
+  />
+</div>
                     <div className="flex items-center mb-1">
                       <BedSingle className="w-4 h-4 mr-2 text-gray-600" />
                       <span className="font-medium">Dormitorio 2</span>
@@ -553,46 +599,90 @@ export default function Home() {
       </Dialog>
 
       <Dialog open={showDescriptionModal} onOpenChange={setShowDescriptionModal}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Descripción Completa</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4 text-gray-700">
-            <p>
-              Disfruta de este hermoso apartamento ubicado en el corazón de Playa del Carmen, a solo unos pasos de
-              la playa y de la famosa Quinta Avenida. La ubicación privilegiada te permitirá acceder fácilmente
-              a los mejores restaurantes, tiendas y atracciones de la zona.
-            </p>
-            
-            <p>
-              El apartamento cuenta con 2 habitaciones amplias y luminosas, cada una con armarios empotrados. 
-              El baño completo está equipado con artículos de higiene personal y toallas limpias. La cocina 
-              totalmente equipada incluye nevera, horno microondas, cafetera y todos los utensilios necesarios
-              para preparar tus comidas.
-            </p>
-            
-            <p>
-              La sala de estar cuenta con un cómodo sofá cama y TV de pantalla plana con cable. Desde el balcón
-              privado podrás disfrutar de vistas al mar y hermosos atardeceres. Además, tendrás acceso completo
-              a todas las áreas comunes del complejo, incluyendo:
-            </p>
-            
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Piscina infinita con vista al mar</li>
-              <li>Gimnasio totalmente equipado</li>
-              <li>Área de barbacoa con parrillas</li>
-              <li>Salón comunal con juegos de mesa</li>
-              <li>Servicio de conserjería 24/7</li>
-            </ul>
-            
-            <p>
-              Ideal para parejas o pequeñas familias que buscan disfrutar de unas vacaciones inolvidables en el
-              Caribe mexicano. Ofrecemos servicio de limpieza semanal y cambio de toallas bajo solicitud.
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
+  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+    <DialogHeader className="sticky top-0 bg-white z-10 pb-4 border-b">
+      <DialogTitle className="text-2xl font-bold">Luna Maya, Tierra 6 - Tu Refugio Exclusivo en Playa del Carmen</DialogTitle>
+    </DialogHeader>
+    
+    <div className="space-y-6 text-gray-700 pt-4">
+      <div className="bg-teal-50 p-4 rounded-lg">
+        <h3 className="text-lg font-semibold text-teal-700 mb-2">¡Bienvenido a tu paraíso escondido!</h3>
+        <p className="text-gray-700">
+          Descubre el escape perfecto en el corazón de Playa del Carmen. Este impresionante penthouse ofrece vistas panorámicas al mar, 
+          comodidades modernas y una ubicación inmejorable a solo unos pasos de las aguas turquesas de Coco Beach y la vibrante energía 
+          de la 5ta Avenida.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold">Sobre la Propiedad</h3>
+        <p>
+          Ubicado dentro del exclusivo <strong>Condominio Luna Maya</strong>, este desarrollo íntimo cuenta con 36 residencias distribuidas 
+          en seis encantadores edificios, lo que garantiza un ambiente tranquilo y privado. El patio central, cuidadosamente mantenido, 
+          cuenta con una reluciente piscina, una palapa con sombra y cómodos asientos, además de tumbonas ideales para relajarse bajo 
+          el sol mexicano.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold">Detalles del Penthouse</h3>
+        <p>
+          <strong>Tierra 6</strong> es un <strong>penthouse espacioso de 99 m²</strong> ubicado en el tercer piso del edificio Tierra. 
+          Cuenta con:
+        </p>
+        <ul className="list-disc pl-5 mt-2 space-y-2">
+          <li><strong>2 amplias habitaciones</strong>, cada una con cama king-size, armario de pared a pared y baño completo en suite</li>
+          <li><strong>Cocina moderna</strong> con encimeras de granito, totalmente equipada con electrodomésticos y utensilios</li>
+          <li><strong>Espacio de vida abierto, luminoso y aireado</strong> con un cómodo sofá que se convierte en cama king-size</li>
+          <li><strong>Balcón privado</strong> con impresionantes vistas al mar, la piscina y las exuberantes áreas comunes</li>
+          <li><strong>Acabados de lujo</strong>, incluidos pisos de mármol y cortinas eléctricas anticiclónicas</li>
+          <li><strong>Comodidades adicionales</strong> como lavadora y secadora, estacionamiento subterráneo reservado y seguridad 24/7</li>
+        </ul>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold">Distribución de Camas</h3>
+        <ul className="space-y-3">
+          <li className="flex items-start">
+            <BedDouble className="flex-shrink-0 w-5 h-5 mr-2 mt-0.5 text-teal-600" />
+            <div>
+              <strong>Habitación 1:</strong> Cama king-size, vista al mar, armario de pared a pared, baño completo en suite
+            </div>
+          </li>
+          <li className="flex items-start">
+            <BedDouble className="flex-shrink-0 w-5 h-5 mr-2 mt-0.5 text-teal-600" />
+            <div>
+              <strong>Habitación 2:</strong> Cama king-size, armario de pared a pared, baño completo en suite
+            </div>
+          </li>
+          <li className="flex items-start">
+            <BedSingle className="flex-shrink-0 w-5 h-5 mr-2 mt-0.5 text-teal-600" />
+            <div>
+              <strong>Sala de estar:</strong> Sofá que se convierte en cama Queen-sized
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold">Ubicación Privilegiada</h3>
+        <p>
+          Explora lo mejor de Playa del Carmen desde esta ubicación estratégica:
+        </p>
+        <ul className="list-disc pl-5 mt-2 space-y-2">
+          <li><strong>1 cuadra</strong> de Coco Beach y sus vibrantes clubes de playa</li>
+          <li><strong>2 cuadras</strong> de la famosa 5ta Avenida con sus tiendas, restaurantes y vida nocturna</li>
+          <li><strong>A 10 minutos a pie</strong> de la Playa Principal de Playa del Carmen</li>
+          <li><strong>Cerca de las principales atracciones</strong> como Xcaret, Xplor, ruinas mayas, cenotes y eco-parques</li>
+          <li><strong>Próximo a supermercados locales</strong> (Super Chedraui, Walmart, Mega) para todas tus necesidades</li>
+          <li><strong>A pocos minutos en auto</strong> de exclusivos campos de golf y centros comerciales</li>
+        </ul>
+      </div>
+
+   
+    </div>
+  </DialogContent>
+</Dialog>
 
       <Dialog open={showAllReviewsModal} onOpenChange={setShowAllReviewsModal}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
@@ -696,6 +786,66 @@ export default function Home() {
           </div>
         </DialogContent>
       </Dialog>
+
+<Dialog open={showRoomModal} onOpenChange={setShowRoomModal}>
+  <DialogContent className="max-w-3xl">
+    {selectedRoom && (
+      <>
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold">{selectedRoom.title}</DialogTitle>
+        </DialogHeader>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
+            <Image
+              src={selectedRoom.image}
+              alt={selectedRoom.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Descripción</h3>
+            <p className="text-gray-700 mb-4">{selectedRoom.description}</p>
+            
+            <h3 className="text-lg font-semibold mb-2">Características</h3>
+            <ul className="space-y-2 text-gray-700">
+              {selectedRoom.features.map((feature, index) => (
+                <li key={index} className="flex items-start">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-4 h-4 mt-0.5 mr-2 text-teal-600"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <div className="mt-6 p-4 bg-teal-50 rounded-lg">
+              <h4 className="font-semibold text-teal-700 mb-2">Detalles del Condominio</h4>
+              <p className="text-sm text-gray-700">
+                El exclusivo Condominio Luna Maya cuenta con 36 residencias distribuidas en seis edificios, 
+                piscina comunitaria, palapa con sombra y seguridad 24/7. El penthouse Tierra 6 ofrece 99 m² 
+                de espacio habitable con acabados de lujo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </>
+    )}
+  </DialogContent>
+</Dialog>
 
       {/* Footer */}
       <footer className="bg-white py-8 sm:py-12 border-t border-gray-200">

@@ -218,14 +218,7 @@ export default function PropertyGallery() {
           <DialogHeader className="p-4 border-b">
             <div className="flex justify-between items-center">
               <DialogTitle className="text-lg font-semibold">Fotos de la propiedad</DialogTitle>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setShowAllPhotos(false)}
-                className="rounded-full"
-              >
-                <X className="w-5 h-5" />
-              </Button>
+            
             </div>
           </DialogHeader>
           

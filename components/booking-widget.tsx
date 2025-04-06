@@ -18,7 +18,6 @@ export default function BookingWidget() {
   })
   const [guests, setGuests] = useState("2")
   const [calendarOpen, setCalendarOpen] = useState(false)
-  //const [calendarMode, setCalendarMode] = useState<'range' | 'single'>('range')
 
   const nightsCount = dateRange.from && dateRange.to 
     ? differenceInDays(dateRange.to, dateRange.from) 
@@ -33,17 +32,12 @@ export default function BookingWidget() {
     if (!date) return
     
     if (!dateRange.from || (dateRange.from && dateRange.to)) {
-      // Primera selección o nueva selección completa
       setDateRange({ from: date, to: undefined })
-      //setCalendarMode('single')
     } else {
-      // Segunda selección para completar el rango
       if (date > dateRange.from) {
         setDateRange(prev => ({ ...prev, to: date }))
-        //setCalendarMode('range')
         setCalendarOpen(false)
       } else {
-        // Si selecciona una fecha anterior a la de inicio, reiniciamos
         setDateRange({ from: date, to: undefined })
       }
     }
@@ -52,6 +46,29 @@ export default function BookingWidget() {
   const formatDateDisplay = (date: Date | undefined) => {
     if (!date) return "Seleccionar"
     return format(date, "d MMM", { locale: es })
+  }
+
+  const handleReservation = () => {
+    if (!dateRange.from || !dateRange.to) {
+      alert("Por favor selecciona las fechas de tu estadía")
+      return
+    }
+
+    const formattedCheckIn = format(dateRange.from, "dd/MM/yyyy")
+    const formattedCheckOut = format(dateRange.to, "dd/MM/yyyy")
+    
+    const message = `¡Hola! Estoy interesado en hacer una reserva:
+    
+📅 Fechas: ${formattedCheckIn} al ${formattedCheckOut}
+👥 Huéspedes: ${guests} persona(s)
+💰 Total estimado: $${total} USD ($${pricePerNight} USD/noche × ${nightsCount} noches + tarifas)
+
+Por favor confírmame la disponibilidad. ¡Gracias!`
+
+    const encodedMessage = encodeURIComponent(message)
+    const whatsappUrl = `https://wa.me/51997542843?text=${encodedMessage}`
+    
+    window.open(whatsappUrl, "_blank")
   }
 
   return (
@@ -69,7 +86,7 @@ export default function BookingWidget() {
           </div>
         </div>
 
-        {/* Selector de fechas mejorado */}
+        {/* Selector de fechas */}
         <div className="p-4 mb-4 border rounded-lg bg-gray-50">
           <div className="grid grid-cols-2 gap-2 mb-4">
             <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
@@ -80,9 +97,6 @@ export default function BookingWidget() {
                     "justify-start text-left h-14",
                     !dateRange.from && "text-muted-foreground"
                   )}
-                  onClick={() => {
-                    //setCalendarMode(dateRange.from && !dateRange.to ? 'single' : 'range')
-                  }}
                 >
                   <div className="flex flex-col items-start w-full">
                     <span className="text-xs font-medium text-gray-500">LLEGADA</span>
@@ -114,13 +128,6 @@ export default function BookingWidget() {
                     "justify-start text-left h-14",
                     !dateRange.to && "text-muted-foreground"
                   )}
-                  onClick={() => {
-                    if (dateRange.from && !dateRange.to) {
-                      //setCalendarMode('single')
-                    } else {
-                      //setCalendarMode('range')
-                    }
-                  }}
                 >
                   <div className="flex flex-col items-start w-full">
                     <span className="text-xs font-medium text-gray-500">SALIDA</span>
@@ -134,7 +141,6 @@ export default function BookingWidget() {
             </Popover>
           </div>
 
-          {/* Resto del componente permanece igual */}
           <div>
             <Select value={guests} onValueChange={setGuests}>
               <SelectTrigger className="h-14 text-left">
@@ -158,7 +164,11 @@ export default function BookingWidget() {
           </div>
         </div>
 
-        <Button className="w-full h-14 text-lg bg-teal-600 hover:bg-teal-700" size="lg">
+        <Button 
+          className="w-full h-14 text-lg bg-teal-600 hover:bg-teal-700" 
+          size="lg"
+          onClick={handleReservation}
+        >
           Reservar ahora
         </Button>
 
@@ -194,4 +204,4 @@ export default function BookingWidget() {
       </CardContent>
     </Card>
   )
-}                                                                                                                                               
+}
