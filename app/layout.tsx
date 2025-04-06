@@ -9,7 +9,7 @@ import type { Metadata } from "next"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Hermoso apartamento en Playa del Carmen - VRBO",
+  title: "Luna Maya - Torre 6",
   description:
     "Disfruta de este hermoso apartamento ubicado en el corazón de Playa del Carmen, a solo unos pasos de la playa y de la famosa Quinta Avenida.",
 }
